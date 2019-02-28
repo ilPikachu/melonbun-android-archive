@@ -16,7 +16,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways"
-            app:navigationIcon="@drawable/icon_menu"
+            app:navigationIcon="@drawable/ic_menu"
             app:title="@string/request_title"
             app:titleTextColor="@android:color/white" />
 
@@ -25,24 +25,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
-            app:layout_scrollFlags="scroll"
-            app:tabMode="fixed" />
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/request_viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="@android:color/background_light">
-
-            <androidx.viewpager.widget.PagerTabStrip
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp" />
-
-        </androidx.viewpager.widget.ViewPager>
+            app:tabMode="fixed"
+            app:tabTextColor="@android:color/white" />
 
     </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/request_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/background_light"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    </androidx.viewpager.widget.ViewPager>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/request_add_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_add_action"
+        app:layout_anchor="@id/request_viewpager"
+        app:layout_anchorGravity="bottom|end"
+        app:layout_behavior="net.melonbun.melonbun.common.ui.ScrollAwareFABBehavior"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

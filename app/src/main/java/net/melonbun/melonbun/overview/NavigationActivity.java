@@ -28,8 +28,9 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
         ButterKnife.bind(this);
 
         setSupportActionBar(requestToolbar);
-        //requestViewPager.setAdapter();
-        //requestTabLayout.setupWithViewPager(requestViewPager);
+        RequestViewPagerAdapter requestViewPagerAdapter = new RequestViewPagerAdapter(getSupportFragmentManager(), this);
+        requestViewPager.setAdapter(requestViewPagerAdapter);
+        requestTabLayout.setupWithViewPager(requestViewPager);
     }
 
     @Override

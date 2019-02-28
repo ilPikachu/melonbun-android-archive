@@ -8,4 +8,7 @@
     <string name="search">search</string>
     <string name="profile">profile</string>
 
+    <string name="posted_request_tab_title">Posted</string>
+    <string name="favourite_request_tab_title">Favourites</string>
+
 </resources>
