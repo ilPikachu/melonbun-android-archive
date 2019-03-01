@@ -35,19 +35,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/background_light"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-    </androidx.viewpager.widget.ViewPager>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/request_add_fab"
+        android:id="@+id/request_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
+        android:clickable="true"
+        android:focusable="true"
         android:src="@drawable/ic_add_action"
         app:layout_anchor="@id/request_viewpager"
         app:layout_anchorGravity="bottom|end"
-        app:layout_behavior="net.melonbun.melonbun.common.ui.ScrollAwareFABBehavior"/>
+        app:layout_behavior="net.melonbun.melonbun.common.ui.ScrollAwareFABBehavior"
+        app:rippleColor="@color/rippleGrey" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

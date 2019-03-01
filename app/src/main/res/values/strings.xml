@@ -7,6 +7,7 @@
     <string name="selected_title">Selected</string>
     <string name="search">search</string>
     <string name="profile">profile</string>
+    <string name="new_request">New Request</string>
 
     <string name="posted_request_tab_title">Posted</string>
     <string name="favourite_request_tab_title">Favourites</string>

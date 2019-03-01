@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.melonbun.melonbun.R;
+import net.melonbun.melonbun.request.model.Request;
 
 import java.util.List;
 

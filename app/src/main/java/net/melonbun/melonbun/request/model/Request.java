@@ -1,4 +1,4 @@
-package net.melonbun.melonbun.request;
+package net.melonbun.melonbun.request.model;
 
 public class Request {
     private String requestTitle;
@@ -17,4 +17,5 @@ public class Request {
     public String getRequestDate() {
         return requestDate;
     }
+
 }

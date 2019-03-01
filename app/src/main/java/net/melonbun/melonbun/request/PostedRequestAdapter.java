@@ -1,19 +1,24 @@
 package net.melonbun.melonbun.request;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
 
 import net.melonbun.melonbun.R;
+import net.melonbun.melonbun.request.model.Request;
 
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 public class PostedRequestAdapter extends RecyclerView.Adapter<PostedRequestAdapter.ViewHolder> {
+
+    private final static int FADE_DURATION = 250;
 
     private List<Request> requests;
 
@@ -33,11 +38,18 @@ public class PostedRequestAdapter extends RecyclerView.Adapter<PostedRequestAdap
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.requestCardTitle.setText(requests.get(position).getRequestTitle());
         holder.requestCardDate.setText(requests.get(position).getRequestDate());
+        setFadeAnimation(holder.requestCardView);
     }
 
     @Override
     public int getItemCount() {
         return requests.size();
+    }
+
+    private void setFadeAnimation(View view) {
+        AlphaAnimation animation = new AlphaAnimation(0.0f, 1.0f);
+        animation.setDuration(FADE_DURATION);
+        view.startAnimation(animation);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

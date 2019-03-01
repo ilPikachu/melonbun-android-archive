@@ -6,4 +6,5 @@
     <color name="melonGreen">#61cf6c</color>
     <color name="melonGreenDark">#39bb46</color>
     <color name="melonYellow">#f4a900</color>
+    <color name="rippleGrey">#1f000000</color>
 </resources>
