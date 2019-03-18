@@ -29,7 +29,7 @@ public class PostedRequestAdapter extends RecyclerView.Adapter<PostedRequestAdap
     @Override
     public PostedRequestAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         MaterialCardView cardView = (MaterialCardView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_request, parent, false);
+                .inflate(R.layout.item_request_card, parent, false);
 
         return new ViewHolder(cardView);
     }
@@ -63,8 +63,8 @@ public class PostedRequestAdapter extends RecyclerView.Adapter<PostedRequestAdap
 
             this.requestCardView = requestCardView;
             requestCardImage = requestCardView.findViewById(R.id.request_card_image);
-            requestCardTitle = requestCardView.findViewById(R.id.request_card_title);
-            requestCardDate = requestCardView.findViewById(R.id.request_card_date);
+            //requestCardTitle = requestCardView.findViewById(R.id.request_card_title);
+            //requestCardDate = requestCardView.findViewById(R.id.request_card_date);
         }
     }
 }

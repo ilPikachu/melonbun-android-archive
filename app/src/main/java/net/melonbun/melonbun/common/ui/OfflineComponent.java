@@ -1,4 +1,4 @@
 package net.melonbun.melonbun.common.ui;
 
-public class RequestCardComponent {
+public class OfflineComponent {
 }

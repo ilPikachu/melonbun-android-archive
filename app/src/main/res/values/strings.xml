@@ -1,15 +1,9 @@
 <resources>
     <string name="app_name">melonbun</string>
-    <string name="social_title">Social</string>
-    <string name="request_title">Request</string>
-    <string name="fulfil_title">Fulfil</string>
-    <string name="conversation_title">Conversation</string>
-    <string name="selected_title">Selected</string>
-    <string name="search">search</string>
-    <string name="profile">profile</string>
-    <string name="new_request">New Request</string>
+    <string name="explore">Explore</string>
+    <string name="post">Post</string>
+    <string name="profile">Profile</string>
 
     <string name="posted_request_tab_title">Posted</string>
-    <string name="favourite_request_tab_title">Favourites</string>
-
+    <string name="favourite_request_tab_title">Favourite</string>
 </resources>

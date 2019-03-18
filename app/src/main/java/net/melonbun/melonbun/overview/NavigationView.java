@@ -4,8 +4,10 @@ import net.melonbun.melonbun.common.BaseView;
 
 public interface NavigationView extends BaseView {
 
-    void showRequestFab();
+    void navigateToExplore();
 
-    void hideRequestFab();
+    void navigateToPost();
+
+    void navigateToProfile();
 
 }
