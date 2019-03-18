@@ -1,7 +1,7 @@
-package net.melonbun.melonbun.request;
+package net.melonbun.melonbun.explorer;
 
 import net.melonbun.melonbun.common.BasePresenter;
-import net.melonbun.melonbun.request.model.Request;
+import net.melonbun.melonbun.common.model.Request;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.UUID;
 
 //TODO: RxAndroid for API calls https://github.com/ReactiveX/RxAndroid
 
-public class PostedRequestPresenter extends BasePresenter<PostedRequestsView> {
+public class ExplorerPresenter extends BasePresenter<ExplorerView> {
 
     public void decorateView() {
         List<Request> mockPostedRequests = populateMockRequests(20);

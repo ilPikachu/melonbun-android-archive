@@ -1,4 +1,4 @@
-package net.melonbun.melonbun.request;
+package net.melonbun.melonbun.explorer;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,20 +6,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.melonbun.melonbun.R;
-import net.melonbun.melonbun.request.model.Request;
+import net.melonbun.melonbun.common.BaseFragment;
+import net.melonbun.melonbun.common.model.Request;
+import net.melonbun.melonbun.explorer.adapter.PostedRequestAdapter;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class PostedRequestFragment extends Fragment implements PostedRequestsView {
+public class ExplorerFragment extends BaseFragment implements ExplorerView {
 
     private static final String SELECTED_TAB_INDEX = "selectedTabIndex";
 
@@ -27,14 +28,14 @@ public class PostedRequestFragment extends Fragment implements PostedRequestsVie
 
     private Unbinder unbinder;
     private PostedRequestAdapter postedRequestAdapter;
-    private PostedRequestPresenter presenter;
+    private ExplorerPresenter presenter;
 
-    public static PostedRequestFragment newInstance(int selectedTabIndex) {
-        PostedRequestFragment postedRequestFragment = new PostedRequestFragment();
+    public static ExplorerFragment newInstance(int selectedTabIndex) {
+        ExplorerFragment explorerFragment = new ExplorerFragment();
         Bundle args = new Bundle();
         args.putInt(SELECTED_TAB_INDEX, selectedTabIndex);
-        postedRequestFragment.setArguments(args);
-        return postedRequestFragment;
+        explorerFragment.setArguments(args);
+        return explorerFragment;
     }
 
     @Nullable
@@ -48,21 +49,21 @@ public class PostedRequestFragment extends Fragment implements PostedRequestsVie
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        presenter = new PostedRequestPresenter();
+        presenter = new ExplorerPresenter();
         presenter.bindView(this);
         presenter.decorateView();
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         presenter.bindView(this);
         presenter.updateState();
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onStop() {
+        super.onStop();
         presenter.unbindView();
 
     }
@@ -71,6 +72,11 @@ public class PostedRequestFragment extends Fragment implements PostedRequestsVie
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    protected Class<ExplorerPresenter> presenterClassInjection() {
+        return ExplorerPresenter.class;
     }
 
     @Override

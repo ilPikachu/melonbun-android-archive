@@ -4,7 +4,7 @@ import android.content.Context;
 
 import net.melonbun.melonbun.R;
 import net.melonbun.melonbun.request.FavouriteRequestFragment;
-import net.melonbun.melonbun.request.PostedRequestFragment;
+import net.melonbun.melonbun.explorer.ExplorerFragment;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -30,7 +30,7 @@ public class RequestViewPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return PostedRequestFragment.newInstance(0);
+                return ExplorerFragment.newInstance(0);
             case 1:
                 return FavouriteRequestFragment.newInstance(1);
             default:

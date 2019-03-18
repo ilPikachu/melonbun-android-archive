@@ -1,4 +1,4 @@
-package net.melonbun.melonbun.request.model;
+package net.melonbun.melonbun.common.model;
 
 public class Request {
     private String requestTitle;

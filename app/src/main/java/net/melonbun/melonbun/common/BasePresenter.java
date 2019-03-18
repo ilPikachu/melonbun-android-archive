@@ -12,7 +12,7 @@ public abstract class BasePresenter<T extends BaseView> {
 
     protected T view;
 
-    Queue<ViewOperation> viewOperationQueue = new LinkedList<>();
+    private Queue<ViewOperation> viewOperationQueue = new LinkedList<>();
 
     public void bindView(T view) {
         this.view = view;

@@ -1,4 +1,4 @@
-package net.melonbun.melonbun.request;
+package net.melonbun.melonbun.explorer.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.google.android.material.card.MaterialCardView;
 
 import net.melonbun.melonbun.R;
-import net.melonbun.melonbun.request.model.Request;
+import net.melonbun.melonbun.common.model.Request;
 
 import java.util.List;
 
