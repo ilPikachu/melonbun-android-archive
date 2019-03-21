@@ -1,4 +1,4 @@
-package net.melonbun.melonbun.request;
+package net.melonbun.melonbun.post;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,24 +12,19 @@ import androidx.fragment.app.Fragment;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class FavouriteRequestFragment extends Fragment implements FavouriteRequestView {
-
-    private static final String SELECTED_TAB_INDEX = "selectedTabIndex";
+public class PostRequestFragment extends Fragment implements PostRequestView {
 
     private Unbinder unbinder;
 
-    public static FavouriteRequestFragment newInstance(int selectedTabIndex) {
-        FavouriteRequestFragment favouriteRequestFragment = new FavouriteRequestFragment();
-        Bundle args = new Bundle();
-        args.putInt(SELECTED_TAB_INDEX, selectedTabIndex);
-        favouriteRequestFragment.setArguments(args);
-        return favouriteRequestFragment;
+    public static PostRequestFragment newInstance() {
+        PostRequestFragment postRequestFragment = new PostRequestFragment();
+        return postRequestFragment;
     }
 
     @Nullable
     @Override
     public View onCreateView(@Nullable LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View inflatedView = inflater.inflate(R.layout.fragment_posted_request, container, false);
+        View inflatedView = inflater.inflate(R.layout.fragment_post_request, container, false);
         unbinder = ButterKnife.bind(this, inflatedView);
         return inflatedView;
     }

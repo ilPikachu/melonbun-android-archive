@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import net.melonbun.melonbun.R;
 import net.melonbun.melonbun.common.BaseFragment;
 import net.melonbun.melonbun.common.model.Request;
-import net.melonbun.melonbun.explorer.adapter.PostedRequestAdapter;
+import net.melonbun.melonbun.explorer.adapter.RequestAdapter;
 
 import java.util.List;
 
@@ -20,28 +20,24 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class ExplorerFragment extends BaseFragment implements ExplorerView {
+public class ExploreFragment extends BaseFragment implements ExploreView {
 
-    private static final String SELECTED_TAB_INDEX = "selectedTabIndex";
-
-    @BindView(R.id.posted_request_list) RecyclerView requestList;
+    @BindView(R.id.posted_request_list)
+    RecyclerView requestList;
 
     private Unbinder unbinder;
-    private PostedRequestAdapter postedRequestAdapter;
-    private ExplorerPresenter presenter;
+    private RequestAdapter requestAdapter;
+    private ExplorePresenter presenter;
 
-    public static ExplorerFragment newInstance(int selectedTabIndex) {
-        ExplorerFragment explorerFragment = new ExplorerFragment();
-        Bundle args = new Bundle();
-        args.putInt(SELECTED_TAB_INDEX, selectedTabIndex);
-        explorerFragment.setArguments(args);
-        return explorerFragment;
+    public static ExploreFragment newInstance() {
+        ExploreFragment exploreFragment = new ExploreFragment();
+        return exploreFragment;
     }
 
     @Nullable
     @Override
     public View onCreateView(@Nullable LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View inflatedView = inflater.inflate(R.layout.fragment_posted_request, container, false);
+        View inflatedView = inflater.inflate(R.layout.fragment_explore, container, false);
         unbinder = ButterKnife.bind(this, inflatedView);
         return inflatedView;
     }
@@ -49,9 +45,16 @@ public class ExplorerFragment extends BaseFragment implements ExplorerView {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        presenter = new ExplorerPresenter();
+        //TODO: Presenter DI
+        presenter = new ExplorePresenter();
         presenter.bindView(this);
         presenter.decorateView();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override
@@ -65,25 +68,17 @@ public class ExplorerFragment extends BaseFragment implements ExplorerView {
     public void onStop() {
         super.onStop();
         presenter.unbindView();
-
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-    @Override
-    protected Class<ExplorerPresenter> presenterClassInjection() {
-        return ExplorerPresenter.class;
+    protected Class<ExplorePresenter> presenterClassInjection() {
+        return ExplorePresenter.class;
     }
 
     @Override
     public void showRequests(List<Request> requests) {
         requestList.setLayoutManager(new LinearLayoutManager(getContext()));
-        postedRequestAdapter = new PostedRequestAdapter(requests);
-        requestList.setAdapter(postedRequestAdapter);
+        requestAdapter = new RequestAdapter(requests);
+        requestList.setAdapter(requestAdapter);
     }
-
 }

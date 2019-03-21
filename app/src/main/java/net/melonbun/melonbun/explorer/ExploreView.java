@@ -5,7 +5,7 @@ import net.melonbun.melonbun.common.model.Request;
 
 import java.util.List;
 
-public interface ExplorerView extends BaseView {
+public interface ExploreView extends BaseView {
 
     void showRequests(List<Request> requests);
 

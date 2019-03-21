@@ -2,7 +2,7 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="430dp"
+    android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/mtrl_card_spacing"
     android:layout_marginTop="@dimen/mtrl_card_spacing"
     android:layout_marginRight="@dimen/mtrl_card_spacing"
@@ -15,7 +15,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/user_profile_image"
+            android:id="@+id/request_card_user_profile_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -28,7 +28,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/user_id"
+            android:id="@+id/request_card_user_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -37,12 +37,12 @@
             android:text="User ID"
             android:textColor="@android:color/black"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/user_profile_image"
-            app:layout_constraintStart_toEndOf="@+id/user_profile_image"
-            app:layout_constraintTop_toTopOf="@+id/user_profile_image" />
+            app:layout_constraintBottom_toBottomOf="@+id/request_card_user_profile_image"
+            app:layout_constraintStart_toEndOf="@+id/request_card_user_profile_image"
+            app:layout_constraintTop_toTopOf="@+id/request_card_user_profile_image" />
 
         <TextView
-            android:id="@+id/posted_date"
+            android:id="@+id/request_card_posted_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -51,12 +51,12 @@
             android:text="2019/03/18"
             android:textColor="@android:color/darker_gray"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/user_profile_image"
+            app:layout_constraintBottom_toBottomOf="@+id/request_card_user_profile_image"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/user_profile_image" />
+            app:layout_constraintTop_toTopOf="@+id/request_card_user_profile_image" />
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/request_card_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -68,8 +68,8 @@
             android:textColor="@android:color/black"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/request_card_image"
-            app:layout_constraintStart_toEndOf="@+id/user_profile_image"
-            app:layout_constraintTop_toBottomOf="@+id/user_id" />
+            app:layout_constraintStart_toEndOf="@+id/request_card_user_profile_image"
+            app:layout_constraintTop_toBottomOf="@+id/request_card_user_id" />
 
         <ImageView
             android:id="@+id/request_card_image"
@@ -81,30 +81,60 @@
             android:src="@drawable/ic_image"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title" />
+            app:layout_constraintTop_toBottomOf="@id/request_card_title" />
 
-        <ImageView
-            android:id="@+id/favorite"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/request_card_tag_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:src="@drawable/ic_favorite_border"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:padding="4dp"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/request_card_image" />
 
-        <ImageView
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/request_card_tag_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:padding="4dp"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/request_card_tag_1"
+            app:layout_constraintTop_toBottomOf="@+id/request_card_image" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/request_card_tag_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:padding="4dp"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/request_card_tag_2"
+            app:layout_constraintTop_toBottomOf="@+id/request_card_image" />
+
+        <ImageView
+            android:id="@+id/request_card_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:src="@drawable/ic_favorite_border"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/request_card_tag_1" />
+
+        <ImageView
+            android:id="@+id/request_card_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
             android:src="@drawable/ic_share"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/favorite"
-            app:layout_constraintTop_toBottomOf="@+id/request_card_image" />
+            app:layout_constraintStart_toEndOf="@+id/request_card_favorite"
+            app:layout_constraintTop_toBottomOf="@+id/request_card_tag_1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

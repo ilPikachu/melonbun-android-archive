@@ -23,6 +23,8 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
         // Presenter injection
     }
 
+    /*
+    // Re enable after Presenter injection logic is done
     @Override
     public void onStart() {
         super.onStart();
@@ -35,4 +37,5 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
         super.onStop();
         presenter.unbindView();
     }
+    */
 }
