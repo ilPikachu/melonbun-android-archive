@@ -6,13 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.melonbun.melonbun.R;
+import net.melonbun.melonbun.common.BaseFragment;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class PostRequestFragment extends Fragment implements PostRequestView {
+public class PostRequestFragment extends BaseFragment<PostRequestPresenter> implements PostRequestView {
 
     private Unbinder unbinder;
 
@@ -33,5 +34,10 @@ public class PostRequestFragment extends Fragment implements PostRequestView {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public Class<PostRequestPresenter> supplyPresenterClass() {
+        return PostRequestPresenter.class;
     }
 }

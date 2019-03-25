@@ -1,4 +1,4 @@
-package net.melonbun.melonbun.explorer.adapter;
+package net.melonbun.melonbun.explore.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;

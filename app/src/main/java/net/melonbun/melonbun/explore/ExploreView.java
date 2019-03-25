@@ -1,4 +1,4 @@
-package net.melonbun.melonbun.explorer;
+package net.melonbun.melonbun.explore;
 
 import net.melonbun.melonbun.common.BaseView;
 import net.melonbun.melonbun.common.model.Request;

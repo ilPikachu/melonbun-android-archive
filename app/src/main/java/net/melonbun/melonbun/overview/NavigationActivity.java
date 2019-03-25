@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import net.melonbun.melonbun.R;
-import net.melonbun.melonbun.explorer.ExploreFragment;
+import net.melonbun.melonbun.explore.ExploreFragment;
 import net.melonbun.melonbun.post.PostRequestFragment;
 
 public class NavigationActivity extends AppCompatActivity implements NavigationView {

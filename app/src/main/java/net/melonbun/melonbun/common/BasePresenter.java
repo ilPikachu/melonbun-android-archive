@@ -3,6 +3,14 @@ package net.melonbun.melonbun.common;
 import java.util.LinkedList;
 import java.util.Queue;
 
+/**
+ * BasePresenter that is extended by all Presenter classes
+ * Handles unbind, bind of the view to the presenter
+ * Handles queueing of ViewOperations when view is not yet bind to the presenter
+ * Handles release and execution of queued ViewOperations when view is bind to the presenter
+ *
+ * @param <T> View interface that extends from BaseView
+ */
 public abstract class BasePresenter<T extends BaseView> {
 
     @FunctionalInterface

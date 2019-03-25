@@ -1,4 +1,4 @@
-package net.melonbun.melonbun.explorer;
+package net.melonbun.melonbun.explore;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import net.melonbun.melonbun.R;
 import net.melonbun.melonbun.common.BaseFragment;
 import net.melonbun.melonbun.common.model.Request;
-import net.melonbun.melonbun.explorer.adapter.RequestAdapter;
+import net.melonbun.melonbun.explore.adapter.RequestAdapter;
 
 import java.util.List;
 
@@ -20,7 +20,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class ExploreFragment extends BaseFragment implements ExploreView {
+/**
+ * This is the fragment for the explore page
+ */
+public class ExploreFragment extends BaseFragment<ExplorePresenter> implements ExploreView {
 
     @BindView(R.id.posted_request_list)
     RecyclerView requestList;
@@ -71,7 +74,7 @@ public class ExploreFragment extends BaseFragment implements ExploreView {
     }
 
     @Override
-    protected Class<ExplorePresenter> presenterClassInjection() {
+    protected Class<ExplorePresenter> supplyPresenterClass() {
         return ExplorePresenter.class;
     }
 

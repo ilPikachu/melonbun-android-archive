@@ -1,4 +1,4 @@
-package net.melonbun.melonbun.explorer;
+package net.melonbun.melonbun.explore;
 
 import net.melonbun.melonbun.common.BasePresenter;
 import net.melonbun.melonbun.common.model.Price;
@@ -14,6 +14,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 //TODO: RxAndroid for API calls https://github.com/ReactiveX/RxAndroid
 
+/**
+ * This is the presenter for {@link ExploreFragment}
+ */
 public class ExplorePresenter extends BasePresenter<ExploreView> {
 
     public void decorateView() {
@@ -36,7 +39,7 @@ public class ExplorePresenter extends BasePresenter<ExploreView> {
             String body = UUID.randomUUID().toString();
             String date = new SimpleDateFormat("yyyy/MM/dd", new Locale("en", "CA")).format(new Date());
             String status = getAStatus();
-            Price price = new Price(100, "CAD");
+            Price price = new Price(100.0, "CAD");
             List<String> tags = new ArrayList<>();
             tags.add("tag1");
             tags.add("tag2");
