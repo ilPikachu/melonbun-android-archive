@@ -6,13 +6,14 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
+ * This is not used right now.
  * PresenterModule class provides object of Presenter classes for DI, used in {@link net.melonbun.melonbun.dagger.ApplicationComponent}
  */
 @Module
 public class PresenterModule {
 
     @Provides
-    public ExplorePresenter explorePresenter(){
+    public static ExplorePresenter explorePresenter() {
         return new ExplorePresenter();
     }
 }

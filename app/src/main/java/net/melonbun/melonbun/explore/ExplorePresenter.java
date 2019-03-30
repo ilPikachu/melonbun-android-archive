@@ -12,12 +12,18 @@ import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
+import javax.inject.Inject;
+
 //TODO: RxAndroid for API calls https://github.com/ReactiveX/RxAndroid
 
 /**
  * This is the presenter for {@link ExploreFragment}
  */
 public class ExplorePresenter extends BasePresenter<ExploreView> {
+
+    @Inject
+    public ExplorePresenter() {
+    }
 
     public void decorateView() {
         List<Request> mockPostedRequests = populateMockRequests(20);

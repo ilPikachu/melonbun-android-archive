@@ -5,17 +5,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import net.melonbun.melonbun.MelonbunApplication;
 import net.melonbun.melonbun.R;
-import net.melonbun.melonbun.common.BaseFragment;
 
+import javax.inject.Inject;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class PostRequestFragment extends BaseFragment<PostRequestPresenter> implements PostRequestView {
+public class PostRequestFragment extends Fragment implements PostRequestView {
 
     private Unbinder unbinder;
+
+    @Inject
+    PostRequestPresenter presenter;
 
     public static PostRequestFragment newInstance() {
         PostRequestFragment postRequestFragment = new PostRequestFragment();
@@ -31,13 +37,15 @@ public class PostRequestFragment extends BaseFragment<PostRequestPresenter> impl
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        MelonbunApplication.getApplicationComponent().inject(this);
+        presenter.bindView(this);
     }
 
     @Override
-    public Class<PostRequestPresenter> supplyPresenterClass() {
-        return PostRequestPresenter.class;
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

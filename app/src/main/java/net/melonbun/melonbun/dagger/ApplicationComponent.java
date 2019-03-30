@@ -1,19 +1,21 @@
 package net.melonbun.melonbun.dagger;
 
-import net.melonbun.melonbun.dagger.modules.PresenterModule;
+import net.melonbun.melonbun.explore.ExploreFragment;
+import net.melonbun.melonbun.post.PostRequestFragment;
 
 import javax.inject.Singleton;
 import dagger.Component;
 
 /**
- * ApplicationComponent interface defines the modules that are provided for DI
+ * ApplicationComponent is the interface for telling dagger where to inject instances
+ * and also provide injected instances by using component modules.
  */
 @Singleton
-@Component(modules = {
-        PresenterModule.class
-})
+@Component()
 public interface ApplicationComponent {
 
-    void inject(PresenterModule presenterModule);
+    void inject(ExploreFragment exploreFragment);
+
+    void inject(PostRequestFragment postRequestFragment);
 
 }

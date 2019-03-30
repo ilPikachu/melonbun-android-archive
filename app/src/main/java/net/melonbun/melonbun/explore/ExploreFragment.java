@@ -5,15 +5,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import net.melonbun.melonbun.MelonbunApplication;
 import net.melonbun.melonbun.R;
-import net.melonbun.melonbun.common.BaseFragment;
 import net.melonbun.melonbun.common.model.Request;
 import net.melonbun.melonbun.explore.adapter.RequestAdapter;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -23,14 +26,16 @@ import butterknife.Unbinder;
 /**
  * This is the fragment for the explore page
  */
-public class ExploreFragment extends BaseFragment<ExplorePresenter> implements ExploreView {
+public class ExploreFragment extends Fragment implements ExploreView {
 
     @BindView(R.id.posted_request_list)
     RecyclerView requestList;
 
     private Unbinder unbinder;
     private RequestAdapter requestAdapter;
-    private ExplorePresenter presenter;
+
+    @Inject
+    ExplorePresenter presenter;
 
     public static ExploreFragment newInstance() {
         ExploreFragment exploreFragment = new ExploreFragment();
@@ -48,8 +53,7 @@ public class ExploreFragment extends BaseFragment<ExplorePresenter> implements E
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //TODO: Presenter DI
-        presenter = new ExplorePresenter();
+        MelonbunApplication.getApplicationComponent().inject(this);
         presenter.bindView(this);
         presenter.decorateView();
     }
@@ -71,11 +75,6 @@ public class ExploreFragment extends BaseFragment<ExplorePresenter> implements E
     public void onStop() {
         super.onStop();
         presenter.unbindView();
-    }
-
-    @Override
-    protected Class<ExplorePresenter> supplyPresenterClass() {
-        return ExplorePresenter.class;
     }
 
     @Override
