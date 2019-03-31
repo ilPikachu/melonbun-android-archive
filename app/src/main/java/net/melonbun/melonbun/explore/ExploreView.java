@@ -9,4 +9,5 @@ public interface ExploreView extends BaseView {
 
     void showRequests(List<Request> requests);
 
+    void showOfflineView();
 }

@@ -35,8 +35,10 @@ public class ExplorePresenter extends BasePresenter<ExploreView> {
     }
 
     public void setupRequests(List<Request> postedRequests) {
-        if (postedRequests != null && !postedRequests.isEmpty()) {
+        if (postedRequests != null && !postedRequests.isEmpty() && connectivityCheck.isConnected()) {
             executeViewOperation(() -> view.showRequests(postedRequests));
+        } else {
+            executeViewOperation(() -> view.showOfflineView());
         }
     }
 

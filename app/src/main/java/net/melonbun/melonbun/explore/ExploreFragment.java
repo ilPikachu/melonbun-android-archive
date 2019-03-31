@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ViewSwitcher;
 
 import net.melonbun.melonbun.MelonbunApplication;
 import net.melonbun.melonbun.R;
 import net.melonbun.melonbun.common.model.Request;
+import net.melonbun.melonbun.common.ui.OfflineComponent;
 import net.melonbun.melonbun.explore.adapter.RequestAdapter;
 
 import java.util.List;
@@ -28,8 +30,15 @@ import butterknife.Unbinder;
  */
 public class ExploreFragment extends Fragment implements ExploreView {
 
+    private static final int SWITCH_DEFAULT_VIEW = 0;
+    private static final int SWITCH_OFFLINE_VIEW = 1;
+
+    @BindView(R.id.explore_content_switch)
+    ViewSwitcher viewSwitcher;
     @BindView(R.id.posted_request_list)
     RecyclerView requestList;
+    @BindView(R.id.offline_view)
+    OfflineComponent offlineView;
 
     @Inject
     ExplorePresenter presenter;
@@ -53,6 +62,9 @@ public class ExploreFragment extends Fragment implements ExploreView {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        offlineView.setRetryButtonOnClickListener(view1 -> presenter.decorateView());
+
         MelonbunApplication.getApplicationComponent().inject(this);
         presenter.bindView(this);
         presenter.decorateView();
@@ -82,5 +94,11 @@ public class ExploreFragment extends Fragment implements ExploreView {
         requestList.setLayoutManager(new LinearLayoutManager(getContext()));
         requestAdapter = new RequestAdapter(requests);
         requestList.setAdapter(requestAdapter);
+        viewSwitcher.setDisplayedChild(SWITCH_DEFAULT_VIEW);
+    }
+
+    @Override
+    public void showOfflineView() {
+        viewSwitcher.setDisplayedChild(SWITCH_OFFLINE_VIEW);
     }
 }
