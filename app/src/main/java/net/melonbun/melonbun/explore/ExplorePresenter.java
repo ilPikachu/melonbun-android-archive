@@ -3,6 +3,7 @@ package net.melonbun.melonbun.explore;
 import net.melonbun.melonbun.common.BasePresenter;
 import net.melonbun.melonbun.common.model.Price;
 import net.melonbun.melonbun.common.model.Request;
+import net.melonbun.melonbun.common.network.ConnectivityCheck;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,8 +22,11 @@ import javax.inject.Inject;
  */
 public class ExplorePresenter extends BasePresenter<ExploreView> {
 
+    private final ConnectivityCheck connectivityCheck;
+
     @Inject
-    public ExplorePresenter() {
+    public ExplorePresenter(ConnectivityCheck connectivityCheck) {
+        this.connectivityCheck = connectivityCheck;
     }
 
     public void decorateView() {

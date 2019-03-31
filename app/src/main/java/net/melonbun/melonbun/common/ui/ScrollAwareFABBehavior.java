@@ -10,6 +10,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
 
+//Behavior for showing and hiding FAB upon scroll: https://guides.codepath.com/android/floating-action-buttons
 public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
 
     //Constructor when attached to a view class as the default behavior

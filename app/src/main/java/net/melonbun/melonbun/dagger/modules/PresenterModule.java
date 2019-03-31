@@ -1,5 +1,6 @@
 package net.melonbun.melonbun.dagger.modules;
 
+import net.melonbun.melonbun.common.network.ConnectivityCheck;
 import net.melonbun.melonbun.explore.ExplorePresenter;
 
 import dagger.Module;
@@ -13,7 +14,7 @@ import dagger.Provides;
 public class PresenterModule {
 
     @Provides
-    public static ExplorePresenter explorePresenter() {
-        return new ExplorePresenter();
+    public static ExplorePresenter explorePresenter(ConnectivityCheck connectivityCheck) {
+        return new ExplorePresenter(connectivityCheck);
     }
 }

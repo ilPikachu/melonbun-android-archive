@@ -31,11 +31,11 @@ public class ExploreFragment extends Fragment implements ExploreView {
     @BindView(R.id.posted_request_list)
     RecyclerView requestList;
 
-    private Unbinder unbinder;
-    private RequestAdapter requestAdapter;
-
     @Inject
     ExplorePresenter presenter;
+
+    private Unbinder unbinder;
+    private RequestAdapter requestAdapter;
 
     public static ExploreFragment newInstance() {
         ExploreFragment exploreFragment = new ExploreFragment();
