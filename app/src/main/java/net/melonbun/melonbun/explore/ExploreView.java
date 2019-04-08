@@ -7,6 +7,10 @@ import java.util.List;
 
 public interface ExploreView extends BaseView {
 
+    void showProgressBar();
+
+    void hideProgressBar();
+
     void showRequests(List<RequestResponse> requestResponses);
 
     void hideRequests();

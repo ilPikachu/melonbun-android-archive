@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import net.melonbun.melonbun.MelonbunApplication;
 import net.melonbun.melonbun.R;
@@ -30,6 +31,8 @@ import butterknife.Unbinder;
  */
 public class ExploreFragment extends Fragment implements ExploreView {
 
+    @BindView(R.id.progress_bar_loading)
+    ProgressBar progressBar;
     @BindView(R.id.posted_request_list)
     RecyclerView requestList;
     @BindView(R.id.error_view)
@@ -85,6 +88,16 @@ public class ExploreFragment extends Fragment implements ExploreView {
     public void onStop() {
         super.onStop();
         presenter.unbindView();
+    }
+
+    @Override
+    public void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override

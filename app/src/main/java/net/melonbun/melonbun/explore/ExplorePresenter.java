@@ -29,6 +29,7 @@ public class ExplorePresenter extends BasePresenter<ExploreView> {
 
     void decorateView() {
         if (connectivityCheck.isConnected()) {
+            setupProgressBar();
             exploreService.getRequests().enqueue(new Callback<List<RequestResponse>>() {
                 @Override
                 public void onResponse(Call<List<RequestResponse>> call, Response<List<RequestResponse>> response) {
@@ -51,6 +52,7 @@ public class ExplorePresenter extends BasePresenter<ExploreView> {
 
     private void setupRequests(List<RequestResponse> postedRequestResponses) {
         if (postedRequestResponses != null && !postedRequestResponses.isEmpty()) {
+            executeViewOperation(() -> view.hideProgressBar());
             executeViewOperation(() -> view.hideErrorView());
             executeViewOperation(() -> view.hideOfflineView());
             executeViewOperation(() -> view.showRequests(postedRequestResponses));
@@ -60,14 +62,23 @@ public class ExplorePresenter extends BasePresenter<ExploreView> {
     }
 
     private void setupErrorView() {
+        executeViewOperation(() -> view.hideProgressBar());
         executeViewOperation(() -> view.hideRequests());
         executeViewOperation(() -> view.hideOfflineView());
         executeViewOperation(() -> view.showErrorView());
     }
 
     private void setupOfflineView() {
+        executeViewOperation(() -> view.hideProgressBar());
         executeViewOperation(() -> view.hideRequests());
         executeViewOperation(() -> view.hideErrorView());
         executeViewOperation(() -> view.showOfflineView());
+    }
+
+    private void setupProgressBar() {
+        executeViewOperation(() -> view.hideRequests());
+        executeViewOperation(() -> view.hideErrorView());
+        executeViewOperation(() -> view.hideOfflineView());
+        executeViewOperation(() -> view.showProgressBar());
     }
 }
