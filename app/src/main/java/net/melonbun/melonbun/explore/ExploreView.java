@@ -9,7 +9,13 @@ public interface ExploreView extends BaseView {
 
     void showRequests(List<RequestResponse> requestResponses);
 
+    void hideRequests();
+
     void showErrorView();
 
+    void hideErrorView();
+
     void showOfflineView();
+
+    void hideOfflineView();
 }

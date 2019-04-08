@@ -13,8 +13,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-//TODO: RxAndroid for API calls https://github.com/ReactiveX/RxAndroid
-
 /**
  * This is the presenter for {@link ExploreFragment}
  */
@@ -35,7 +33,7 @@ public class ExplorePresenter extends BasePresenter<ExploreView> {
                 @Override
                 public void onResponse(Call<List<RequestResponse>> call, Response<List<RequestResponse>> response) {
                     if (!response.isSuccessful()) {
-                        executeViewOperation(() -> view.showErrorView());
+                        setupErrorView();
                     } else {
                         setupRequests(response.body());
                     }
@@ -43,20 +41,33 @@ public class ExplorePresenter extends BasePresenter<ExploreView> {
 
                 @Override
                 public void onFailure(Call<List<RequestResponse>> call, Throwable throwable) {
-                    executeViewOperation(() -> view.showErrorView());
+                    setupErrorView();
                 }
             });
         } else {
-            executeViewOperation(() -> view.showOfflineView());
+            setupOfflineView();
         }
     }
 
     private void setupRequests(List<RequestResponse> postedRequestResponses) {
         if (postedRequestResponses != null && !postedRequestResponses.isEmpty()) {
+            executeViewOperation(() -> view.hideErrorView());
+            executeViewOperation(() -> view.hideOfflineView());
             executeViewOperation(() -> view.showRequests(postedRequestResponses));
         } else {
-            executeViewOperation(() -> view.showErrorView());
+            setupErrorView();
         }
     }
 
+    private void setupErrorView() {
+        executeViewOperation(() -> view.hideRequests());
+        executeViewOperation(() -> view.hideOfflineView());
+        executeViewOperation(() -> view.showErrorView());
+    }
+
+    private void setupOfflineView() {
+        executeViewOperation(() -> view.hideRequests());
+        executeViewOperation(() -> view.hideErrorView());
+        executeViewOperation(() -> view.showOfflineView());
+    }
 }

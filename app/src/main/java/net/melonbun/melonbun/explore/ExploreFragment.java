@@ -4,12 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ViewSwitcher;
 
 import net.melonbun.melonbun.MelonbunApplication;
 import net.melonbun.melonbun.R;
 import net.melonbun.melonbun.common.model.RequestResponse;
 import net.melonbun.melonbun.common.ui.ErrorComponent;
+import net.melonbun.melonbun.common.ui.OfflineComponent;
 import net.melonbun.melonbun.explore.adapter.RequestAdapter;
 
 import java.util.List;
@@ -30,15 +30,12 @@ import butterknife.Unbinder;
  */
 public class ExploreFragment extends Fragment implements ExploreView {
 
-    private static final int SWITCH_DEFAULT_VIEW = 0;
-    private static final int SWITCH_ERROR_VIEW = 1;
-
-    @BindView(R.id.explore_content_switch)
-    ViewSwitcher viewSwitcher;
     @BindView(R.id.posted_request_list)
     RecyclerView requestList;
     @BindView(R.id.error_view)
     ErrorComponent errorComponent;
+    @BindView(R.id.offline_view)
+    OfflineComponent offlineComponent;
 
     @Inject
     ExplorePresenter presenter;
@@ -64,6 +61,7 @@ public class ExploreFragment extends Fragment implements ExploreView {
         super.onViewCreated(view, savedInstanceState);
 
         errorComponent.setRetryButtonOnClickListener(view1 -> presenter.decorateView());
+        offlineComponent.setRetryButtonOnClickListener(view1 -> presenter.decorateView());
 
         MelonbunApplication.getApplicationComponent().inject(this);
         presenter.bindView(this);
@@ -94,21 +92,32 @@ public class ExploreFragment extends Fragment implements ExploreView {
         requestList.setLayoutManager(new LinearLayoutManager(getContext()));
         requestAdapter = new RequestAdapter(requestResponses);
         requestList.setAdapter(requestAdapter);
-        viewSwitcher.setDisplayedChild(SWITCH_DEFAULT_VIEW);
+        requestList.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideRequests() {
+        requestList.setVisibility(View.GONE);
     }
 
     @Override
     public void showErrorView() {
-        errorComponent.setErrorImage(R.drawable.ic_error);
-        errorComponent.setErrorText(R.string.error_text);
-        viewSwitcher.setDisplayedChild(SWITCH_ERROR_VIEW);
+        errorComponent.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideErrorView() {
+        errorComponent.setVisibility(View.GONE);
     }
 
     @Override
     public void showOfflineView() {
-        errorComponent.setErrorImage(R.drawable.ic_offline);
-        errorComponent.setErrorText(R.string.offline_text);
-        viewSwitcher.setDisplayedChild(SWITCH_ERROR_VIEW);
+        offlineComponent.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideOfflineView() {
+        offlineComponent.setVisibility(View.GONE);
     }
 
 }
