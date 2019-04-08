@@ -1,19 +1,17 @@
 package net.melonbun.melonbun.explore;
 
 import net.melonbun.melonbun.common.BasePresenter;
-import net.melonbun.melonbun.common.model.Price;
-import net.melonbun.melonbun.common.model.Request;
+import net.melonbun.melonbun.common.model.RequestResponse;
 import net.melonbun.melonbun.common.network.ConnectivityCheck;
+import net.melonbun.melonbun.explore.network.ExploreService;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
 
 import javax.inject.Inject;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 //TODO: RxAndroid for API calls https://github.com/ReactiveX/RxAndroid
 
@@ -23,68 +21,42 @@ import javax.inject.Inject;
 public class ExplorePresenter extends BasePresenter<ExploreView> {
 
     private final ConnectivityCheck connectivityCheck;
+    private final ExploreService exploreService;
 
     @Inject
-    public ExplorePresenter(ConnectivityCheck connectivityCheck) {
+    public ExplorePresenter(ConnectivityCheck connectivityCheck, ExploreService exploreService) {
         this.connectivityCheck = connectivityCheck;
+        this.exploreService = exploreService;
     }
 
-    public void decorateView() {
-        List<Request> mockPostedRequests = populateMockRequests(20);
-        setupRequests(mockPostedRequests);
-    }
+    void decorateView() {
+        if (connectivityCheck.isConnected()) {
+            exploreService.getRequests().enqueue(new Callback<List<RequestResponse>>() {
+                @Override
+                public void onResponse(Call<List<RequestResponse>> call, Response<List<RequestResponse>> response) {
+                    if (!response.isSuccessful()) {
+                        executeViewOperation(() -> view.showErrorView());
+                    } else {
+                        setupRequests(response.body());
+                    }
+                }
 
-    public void setupRequests(List<Request> postedRequests) {
-        if (postedRequests != null && !postedRequests.isEmpty() && connectivityCheck.isConnected()) {
-            executeViewOperation(() -> view.showRequests(postedRequests));
+                @Override
+                public void onFailure(Call<List<RequestResponse>> call, Throwable throwable) {
+                    executeViewOperation(() -> view.showErrorView());
+                }
+            });
         } else {
             executeViewOperation(() -> view.showOfflineView());
         }
     }
 
-    //TODO: Mock purposes only, delete later, reuse it in presenter tests, replace with builder pattern after models are constructed
-    private List<Request> populateMockRequests(int size) {
-        List<Request> postedRequests = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            String id = UUID.randomUUID().toString();
-            String title = UUID.randomUUID().toString();
-            String body = UUID.randomUUID().toString();
-            String date = new SimpleDateFormat("yyyy/MM/dd", new Locale("en", "CA")).format(new Date());
-            String status = getAStatus();
-            Price price = new Price(100.0, "CAD");
-            List<String> tags = new ArrayList<>();
-            tags.add("tag1");
-            tags.add("tag2");
-            tags.add("tag3");
-
-            postedRequests.add(new Request(id, title, body, date, status, price, tags));
+    private void setupRequests(List<RequestResponse> postedRequestResponses) {
+        if (postedRequestResponses != null && !postedRequestResponses.isEmpty()) {
+            executeViewOperation(() -> view.showRequests(postedRequestResponses));
+        } else {
+            executeViewOperation(() -> view.showErrorView());
         }
-
-        return postedRequests;
-    }
-
-    private String getAStatus() {
-        int randomNumber = ThreadLocalRandom.current().nextInt(4);
-
-        switch (randomNumber) {
-            case 0:
-                return Status.COMPLETE.name();
-            case 1:
-                return Status.FULFILLED.name();
-            case 2:
-                return Status.INCOMPLETE.name();
-            case 3:
-                return Status.INCOMPLETE.name();
-            default:
-                return "";
-        }
-    }
-
-    public enum Status {
-        PENDING,
-        FULFILLED,
-        COMPLETE,
-        INCOMPLETE
     }
 
 }

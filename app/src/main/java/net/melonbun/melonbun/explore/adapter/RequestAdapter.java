@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.google.android.material.card.MaterialCardView;
 
 import net.melonbun.melonbun.R;
-import net.melonbun.melonbun.common.model.Request;
+import net.melonbun.melonbun.common.model.RequestResponse;
 
 import java.util.List;
 
@@ -20,10 +20,10 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
 
     private final static int FADE_DURATION = 250;
 
-    private List<Request> requests;
+    private List<RequestResponse> requestResponses;
 
-    public RequestAdapter(List<Request> requests) {
-        this.requests = requests;
+    public RequestAdapter(List<RequestResponse> requestResponses) {
+        this.requestResponses = requestResponses;
     }
 
     @Override
@@ -37,9 +37,9 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.requestCardUserId.setText(requests.get(position).getId());
-        holder.requestCardDate.setText(requests.get(position).getDate());
-        holder.requestCardTitle.setText(requests.get(position).getTitle());
+        holder.requestCardUserId.setText(requestResponses.get(position).getId());
+        holder.requestCardDate.setText(requestResponses.get(position).getDate());
+        holder.requestCardTitle.setText(requestResponses.get(position).getTitle());
         holder.requestCardFavorite.setOnClickListener(view -> {
             // TODO: favourite locally, if has network, POST call to favourites, changes icon to solid heart
         });
@@ -55,7 +55,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return requests.size();
+        return requestResponses.size();
     }
 
     private void setFadeAnimation(View view) {

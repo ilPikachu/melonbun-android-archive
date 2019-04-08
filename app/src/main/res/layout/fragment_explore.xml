@@ -10,8 +10,8 @@
         android:layout_height="match_parent"
         android:scrollbars="vertical" />
 
-    <net.melonbun.melonbun.common.ui.OfflineComponent
-        android:id="@+id/offline_view"
+    <net.melonbun.melonbun.common.ui.ErrorComponent
+        android:id="@+id/error_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </ViewSwitcher>

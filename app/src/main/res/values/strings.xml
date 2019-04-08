@@ -7,7 +7,8 @@
     <string name="posted_request_tab_title">Posted</string>
     <string name="favourite_request_tab_title">Favourite</string>
 
-    <string name="offline_text_1">You are currently offline.</string>
-    <string name="offline_retry">Try again</string>
+    <string name="offline_text">You\'re offline</string>
+    <string name="error_text">Something went wrong</string>
+    <string name="retry">Retry</string>
 
 </resources>
