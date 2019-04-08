@@ -31,7 +31,10 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
         setContentView(R.layout.activity_navigation);
         ButterKnife.bind(this);
         setUpBottomNavigation();
-        setupFragments();
+
+        if (savedInstanceState == null) {
+            setupFragments();
+        }
     }
 
     private void setupFragments() {
