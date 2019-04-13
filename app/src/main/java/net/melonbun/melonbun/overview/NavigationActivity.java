@@ -43,7 +43,7 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
         Fragment exploreFragment = ExploreFragment.newInstance();
 
         fragmentTransaction.
-                add(R.id.content_frame, exploreFragment)
+                add(R.id.content_frame, exploreFragment, exploreFragment.getClass().getCanonicalName())
                 .commit();
     }
 
@@ -69,13 +69,13 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
 
     @Override
     public void navigateToExplore() {
-        replaceFragment(ExploreFragment.class);
+        showCurrentFragment(ExploreFragment.class);
         Toast.makeText(NavigationActivity.this, "Action clicked explore", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void navigateToPost() {
-        replaceFragment(PostRequestFragment.class);
+        showCurrentFragment(PostRequestFragment.class);
         Toast.makeText(NavigationActivity.this, "Action clicked post", Toast.LENGTH_LONG).show();
     }
 
@@ -87,6 +87,40 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
     private <T extends Fragment> void replaceFragment(Class<T> fragmentClass) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Fragment fragment = instantiateFragment(fragmentClass);
+
+        fragmentTransaction.
+                replace(R.id.content_frame, fragment, fragment.getClass().getCanonicalName())
+                .commit();
+    }
+
+    private <T extends Fragment> void showCurrentFragment(Class<T> fragmentClass) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Fragment fragment = fragmentManager.findFragmentByTag(fragmentClass.getCanonicalName());
+
+        // if fragment is not null, and not visible show fragment
+        if (fragment != null && !fragment.isVisible()) {
+            fragmentTransaction.show(fragment);
+        } else if (fragment == null) {
+            fragment = instantiateFragment(fragmentClass);
+            fragmentTransaction.add(R.id.content_frame, fragment, fragment.getClass().getCanonicalName());
+        } else if (fragment.isVisible()) {
+            //no-op
+            //TODO: Fragment specific actions: for example Explore page would be move to the top callback.
+            return;
+        }
+
+        // if we want to show just one fragment we have to hide all others, show and add will show the fragment, and we hide away all others
+        for (Fragment currentFragment : fragmentManager.getFragments()) {
+            if (currentFragment != fragment) {
+                fragmentTransaction.hide(currentFragment);
+            }
+        }
+        fragmentTransaction.commit();
+    }
+
+    private <T extends Fragment> Fragment instantiateFragment(Class<T> fragmentClass) {
         Fragment fragment;
 
         try {
@@ -95,8 +129,6 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
             throw new IllegalArgumentException("Illegal fragment newInstance argument");
         }
 
-        fragmentTransaction.
-                replace(R.id.content_frame, fragment)
-                .commit();
+        return fragment;
     }
 }
