@@ -14,8 +14,10 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import net.melonbun.melonbun.R;
+import net.melonbun.melonbun.common.BaseFragment;
 import net.melonbun.melonbun.explore.ExploreFragment;
 import net.melonbun.melonbun.post.PostRequestFragment;
+import net.melonbun.melonbun.profile.ProfileFragment;
 
 public class NavigationActivity extends AppCompatActivity implements NavigationView {
 
@@ -31,7 +33,11 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
         setContentView(R.layout.activity_navigation);
         ButterKnife.bind(this);
         setUpBottomNavigation();
-        setupFragments();
+
+        //TODO: Save fragment position during configuration change
+        if (savedInstanceState == null) {
+            setupFragments();
+        }
     }
 
     private void setupFragments() {
@@ -40,7 +46,7 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
         Fragment exploreFragment = ExploreFragment.newInstance();
 
         fragmentTransaction.
-                add(R.id.content_frame, exploreFragment)
+                add(R.id.content_frame, exploreFragment, exploreFragment.getClass().getCanonicalName())
                 .commit();
     }
 
@@ -66,24 +72,71 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
 
     @Override
     public void navigateToExplore() {
-        replaceFragment(ExploreFragment.class);
+        showCurrentFragment(ExploreFragment.class);
         Toast.makeText(NavigationActivity.this, "Action clicked explore", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void navigateToPost() {
-        replaceFragment(PostRequestFragment.class);
+        showCurrentFragment(PostRequestFragment.class);
         Toast.makeText(NavigationActivity.this, "Action clicked post", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void navigateToProfile() {
+        showCurrentFragment(ProfileFragment.class);
         Toast.makeText(NavigationActivity.this, "Action clicked profile", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        int selectedItemId = bottomNavigationView.getSelectedItemId();
+
+        //TODO: We might have to change this logic once we have child fragments adding to the backstack, such as adding of getFragmentManager().getBackStackEntryCount() == 0 condition
+        if (R.id.action_explore != selectedItemId) {
+            bottomNavigationView.setSelectedItemId(R.id.action_explore);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private <T extends Fragment> void replaceFragment(Class<T> fragmentClass) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        BaseFragment fragment = (BaseFragment) instantiateFragment(fragmentClass);
+
+        fragmentTransaction.
+                replace(R.id.content_frame, fragment, fragment.getClass().getCanonicalName())
+                .commit();
+    }
+
+    //TODO: Implement a way you can modify the backstack order, to achieve similar to what youtube android has, currently it's not supported by fragmentManager
+    //TODO: If it's added to the backstack, click on the bottom nav item move the current one to the top of the stack
+    private <T extends Fragment> void showCurrentFragment(Class<T> fragmentClass) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        BaseFragment fragment = (BaseFragment) fragmentManager.findFragmentByTag(fragmentClass.getCanonicalName());
+
+        if (fragment != null && !fragment.isVisible()) {
+            fragmentTransaction.show(fragment);
+        } else if (fragment == null) {
+            fragment = (BaseFragment) instantiateFragment(fragmentClass);
+            fragmentTransaction.add(R.id.content_frame, fragment, fragment.getClass().getCanonicalName());
+        } else if (fragment.isVisible()) {
+            // handling the case where the user click on the same navigation item as the one that's currently displayed
+            fragment.handleOnBottomNavSameItemSelected();
+            return;
+        }
+
+        for (Fragment currentFragment : fragmentManager.getFragments()) {
+            if (currentFragment != fragment) {
+                fragmentTransaction.hide(currentFragment);
+            }
+        }
+        fragmentTransaction.commit();
+    }
+
+    private <T extends Fragment> Fragment instantiateFragment(Class<T> fragmentClass) {
         Fragment fragment;
 
         try {
@@ -92,8 +145,6 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
             throw new IllegalArgumentException("Illegal fragment newInstance argument");
         }
 
-        fragmentTransaction.
-                replace(R.id.content_frame, fragment)
-                .commit();
+        return fragment;
     }
 }

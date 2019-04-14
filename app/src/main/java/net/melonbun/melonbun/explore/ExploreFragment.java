@@ -8,6 +8,7 @@ import android.widget.ProgressBar;
 
 import net.melonbun.melonbun.MelonbunApplication;
 import net.melonbun.melonbun.R;
+import net.melonbun.melonbun.common.BaseFragment;
 import net.melonbun.melonbun.common.model.RequestResponse;
 import net.melonbun.melonbun.common.ui.ErrorComponent;
 import net.melonbun.melonbun.common.ui.OfflineComponent;
@@ -19,7 +20,6 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -29,7 +29,7 @@ import butterknife.Unbinder;
 /**
  * This is the fragment for the explore page
  */
-public class ExploreFragment extends Fragment implements ExploreView {
+public class ExploreFragment extends BaseFragment implements ExploreView {
 
     @BindView(R.id.progress_bar_loading)
     ProgressBar progressBar;
@@ -69,6 +69,8 @@ public class ExploreFragment extends Fragment implements ExploreView {
         MelonbunApplication.getApplicationComponent().inject(this);
         presenter.bindView(this);
         presenter.decorateView();
+
+        setBottomNavEventListener(this::scrollToTop);
     }
 
     @Override
@@ -131,6 +133,11 @@ public class ExploreFragment extends Fragment implements ExploreView {
     @Override
     public void hideOfflineView() {
         offlineComponent.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void scrollToTop() {
+        requestList.getLayoutManager().smoothScrollToPosition(requestList, null, 0);
     }
 
 }

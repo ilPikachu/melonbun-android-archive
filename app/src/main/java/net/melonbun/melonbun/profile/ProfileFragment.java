@@ -1,4 +1,4 @@
-package net.melonbun.melonbun.post;
+package net.melonbun.melonbun.profile;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,22 +16,22 @@ import androidx.annotation.Nullable;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class PostRequestFragment extends BaseFragment implements PostRequestView {
+public class ProfileFragment extends BaseFragment implements ProfileView {
 
     private Unbinder unbinder;
 
     @Inject
-    PostRequestPresenter presenter;
+    ProfilePresenter presenter;
 
-    public static PostRequestFragment newInstance() {
-        PostRequestFragment postRequestFragment = new PostRequestFragment();
-        return postRequestFragment;
+    public static ProfileFragment newInstance() {
+        ProfileFragment profileFragment = new ProfileFragment();
+        return profileFragment;
     }
 
     @Nullable
     @Override
     public View onCreateView(@Nullable LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View inflatedView = inflater.inflate(R.layout.fragment_post_request, container, false);
+        View inflatedView = inflater.inflate(R.layout.fragment_profile, container, false);
         unbinder = ButterKnife.bind(this, inflatedView);
         return inflatedView;
     }
