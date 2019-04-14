@@ -11,4 +11,8 @@
     <string name="error_text">Something went wrong</string>
     <string name="retry">Retry</string>
 
+    <string name="refresh_error">Refresh failed, HTTP error code: %1$d</string>
+    <string name="refresh_error_unknown">Refresh failed</string>
+    <string name="refresh_offline">Refresh failed, you\'re offline</string>
+
 </resources>

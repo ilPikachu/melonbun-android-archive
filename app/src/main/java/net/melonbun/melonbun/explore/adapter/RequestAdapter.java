@@ -58,6 +58,16 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         return requestResponses.size();
     }
 
+    public void clear() {
+        requestResponses.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addAll(List<RequestResponse> requestResponses) {
+        this.requestResponses.addAll(requestResponses);
+        notifyDataSetChanged();
+    }
+
     private void setFadeAnimation(View view) {
         AlphaAnimation animation = new AlphaAnimation(0.0f, 1.0f);
         animation.setDuration(FADE_DURATION);

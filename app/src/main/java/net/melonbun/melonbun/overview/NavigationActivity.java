@@ -73,19 +73,16 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
     @Override
     public void navigateToExplore() {
         showCurrentFragment(ExploreFragment.class);
-        Toast.makeText(NavigationActivity.this, "Action clicked explore", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void navigateToPost() {
         showCurrentFragment(PostRequestFragment.class);
-        Toast.makeText(NavigationActivity.this, "Action clicked post", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void navigateToProfile() {
         showCurrentFragment(ProfileFragment.class);
-        Toast.makeText(NavigationActivity.this, "Action clicked profile", Toast.LENGTH_LONG).show();
     }
 
     @Override

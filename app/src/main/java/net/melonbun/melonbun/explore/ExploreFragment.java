@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import net.melonbun.melonbun.MelonbunApplication;
 import net.melonbun.melonbun.R;
@@ -23,6 +24,7 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -36,6 +38,8 @@ public class ExploreFragment extends BaseFragment implements ExploreView {
 
     @BindView(R.id.progress_bar_loading)
     ProgressBar progressBar;
+    @BindView(R.id.swipe_requests_container)
+    SwipeRefreshLayout swipeRefreshRequestsContainer;
     @BindView(R.id.posted_request_list)
     RecyclerView requestList;
     @BindView(R.id.error_view)
@@ -72,6 +76,8 @@ public class ExploreFragment extends BaseFragment implements ExploreView {
         MelonbunApplication.getApplicationComponent().inject(this);
         presenter.bindView(this);
         presenter.decorateView();
+
+        setupSwipeRefreshContainer();
 
         requestList.setLayoutManager(new FastScrollLinearLayoutManager(getContext(), FastScrollLinearLayoutManager.VERTICAL, false));
         setBottomNavEventListener(this::scrollToTop);
@@ -131,12 +137,19 @@ public class ExploreFragment extends BaseFragment implements ExploreView {
     public void showRequests(List<RequestResponse> requestResponses) {
         requestAdapter = new RequestAdapter(requestResponses);
         requestList.setAdapter(requestAdapter);
-        requestList.setVisibility(View.VISIBLE);
+        swipeRefreshRequestsContainer.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void updateRequests(List<RequestResponse> requestResponses) {
+        requestAdapter.clear();
+        requestAdapter.addAll(requestResponses);
+        swipeRefreshRequestsContainer.setRefreshing(false);
     }
 
     @Override
     public void hideRequests() {
-        requestList.setVisibility(View.GONE);
+        swipeRefreshRequestsContainer.setVisibility(View.GONE);
     }
 
     @Override
@@ -166,4 +179,26 @@ public class ExploreFragment extends BaseFragment implements ExploreView {
         }
     }
 
+    @Override
+    public void showRefreshErrorToast() {
+        Toast.makeText(getContext(), getString(R.string.refresh_error_unknown), Toast.LENGTH_SHORT).show();
+        swipeRefreshRequestsContainer.setRefreshing(false);
+    }
+
+    @Override
+    public void showRefreshErrorToast(int errorCode) {
+        Toast.makeText(getContext(), getString(R.string.refresh_error, errorCode), Toast.LENGTH_SHORT).show();
+        swipeRefreshRequestsContainer.setRefreshing(false);
+    }
+
+    @Override
+    public void showRefreshOfflineToast() {
+        Toast.makeText(getContext(), getString(R.string.refresh_offline), Toast.LENGTH_SHORT).show();
+        swipeRefreshRequestsContainer.setRefreshing(false);
+    }
+
+    private void setupSwipeRefreshContainer() {
+        swipeRefreshRequestsContainer.setOnRefreshListener(() -> presenter.refreshView());
+        swipeRefreshRequestsContainer.setColorSchemeResources(R.color.colorAccent);
+    }
 }
