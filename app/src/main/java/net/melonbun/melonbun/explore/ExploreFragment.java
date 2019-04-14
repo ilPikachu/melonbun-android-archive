@@ -1,6 +1,7 @@
 package net.melonbun.melonbun.explore;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import net.melonbun.melonbun.R;
 import net.melonbun.melonbun.common.BaseFragment;
 import net.melonbun.melonbun.common.model.RequestResponse;
 import net.melonbun.melonbun.common.ui.ErrorComponent;
+import net.melonbun.melonbun.common.ui.FastScrollLinearLayoutManager;
 import net.melonbun.melonbun.common.ui.OfflineComponent;
 import net.melonbun.melonbun.explore.adapter.RequestAdapter;
 
@@ -20,7 +22,6 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,6 +31,8 @@ import butterknife.Unbinder;
  * This is the fragment for the explore page
  */
 public class ExploreFragment extends BaseFragment implements ExploreView {
+
+    private static final String BUNDLE_RECYCLER_LAYOUT = "BUNDLE_RECYCLER_LAYOUT";
 
     @BindView(R.id.progress_bar_loading)
     ProgressBar progressBar;
@@ -70,6 +73,7 @@ public class ExploreFragment extends BaseFragment implements ExploreView {
         presenter.bindView(this);
         presenter.decorateView();
 
+        requestList.setLayoutManager(new FastScrollLinearLayoutManager(getContext(), FastScrollLinearLayoutManager.VERTICAL, false));
         setBottomNavEventListener(this::scrollToTop);
     }
 
@@ -93,6 +97,27 @@ public class ExploreFragment extends BaseFragment implements ExploreView {
     }
 
     @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            Parcelable savedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
+            if (savedRecyclerLayoutState != null && requestList.getLayoutManager() != null) {
+                requestList.getLayoutManager().onRestoreInstanceState(savedRecyclerLayoutState);
+            }
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (requestList.getLayoutManager() != null && requestList.getLayoutManager().onSaveInstanceState() != null) {
+            outState.putParcelable(BUNDLE_RECYCLER_LAYOUT, requestList.getLayoutManager().onSaveInstanceState());
+        }
+    }
+
+    @Override
     public void showProgressBar() {
         progressBar.setVisibility(View.VISIBLE);
     }
@@ -104,7 +129,6 @@ public class ExploreFragment extends BaseFragment implements ExploreView {
 
     @Override
     public void showRequests(List<RequestResponse> requestResponses) {
-        requestList.setLayoutManager(new LinearLayoutManager(getContext()));
         requestAdapter = new RequestAdapter(requestResponses);
         requestList.setAdapter(requestAdapter);
         requestList.setVisibility(View.VISIBLE);
@@ -137,7 +161,9 @@ public class ExploreFragment extends BaseFragment implements ExploreView {
 
     @Override
     public void scrollToTop() {
-        requestList.getLayoutManager().smoothScrollToPosition(requestList, null, 0);
+        if (requestList.getLayoutManager() != null) {
+            requestList.smoothScrollToPosition(0);
+        }
     }
 
 }

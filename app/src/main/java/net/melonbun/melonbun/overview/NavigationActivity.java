@@ -34,7 +34,7 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
         ButterKnife.bind(this);
         setUpBottomNavigation();
 
-        //TODO: Save fragment position during configuration change
+        // setupFragments only if it's fresh start, no savedInstanceState from a configuration change
         if (savedInstanceState == null) {
             setupFragments();
         }
