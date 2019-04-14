@@ -13,6 +13,8 @@ public interface ExploreView extends BaseView {
 
     void showRequests(List<RequestResponse> requestResponses);
 
+    void updateRequests(List<RequestResponse> requestResponses);
+
     void hideRequests();
 
     void showErrorView();
@@ -24,4 +26,10 @@ public interface ExploreView extends BaseView {
     void hideOfflineView();
 
     void scrollToTop();
+
+    void showRefreshErrorToast(int errorCode);
+
+    void showRefreshErrorToast();
+
+    void showRefreshOfflineToast();
 }

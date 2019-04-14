@@ -1,16 +1,19 @@
 package net.melonbun.melonbun.explore;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import net.melonbun.melonbun.MelonbunApplication;
 import net.melonbun.melonbun.R;
 import net.melonbun.melonbun.common.BaseFragment;
 import net.melonbun.melonbun.common.model.RequestResponse;
 import net.melonbun.melonbun.common.ui.ErrorComponent;
+import net.melonbun.melonbun.common.ui.FastScrollLinearLayoutManager;
 import net.melonbun.melonbun.common.ui.OfflineComponent;
 import net.melonbun.melonbun.explore.adapter.RequestAdapter;
 
@@ -20,8 +23,8 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -31,8 +34,12 @@ import butterknife.Unbinder;
  */
 public class ExploreFragment extends BaseFragment implements ExploreView {
 
+    private static final String BUNDLE_RECYCLER_LAYOUT = "BUNDLE_RECYCLER_LAYOUT";
+
     @BindView(R.id.progress_bar_loading)
     ProgressBar progressBar;
+    @BindView(R.id.swipe_requests_container)
+    SwipeRefreshLayout swipeRefreshRequestsContainer;
     @BindView(R.id.posted_request_list)
     RecyclerView requestList;
     @BindView(R.id.error_view)
@@ -70,6 +77,9 @@ public class ExploreFragment extends BaseFragment implements ExploreView {
         presenter.bindView(this);
         presenter.decorateView();
 
+        setupSwipeRefreshContainer();
+
+        requestList.setLayoutManager(new FastScrollLinearLayoutManager(getContext(), FastScrollLinearLayoutManager.VERTICAL, false));
         setBottomNavEventListener(this::scrollToTop);
     }
 
@@ -93,6 +103,27 @@ public class ExploreFragment extends BaseFragment implements ExploreView {
     }
 
     @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            Parcelable savedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
+            if (savedRecyclerLayoutState != null && requestList.getLayoutManager() != null) {
+                requestList.getLayoutManager().onRestoreInstanceState(savedRecyclerLayoutState);
+            }
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (requestList.getLayoutManager() != null && requestList.getLayoutManager().onSaveInstanceState() != null) {
+            outState.putParcelable(BUNDLE_RECYCLER_LAYOUT, requestList.getLayoutManager().onSaveInstanceState());
+        }
+    }
+
+    @Override
     public void showProgressBar() {
         progressBar.setVisibility(View.VISIBLE);
     }
@@ -104,15 +135,21 @@ public class ExploreFragment extends BaseFragment implements ExploreView {
 
     @Override
     public void showRequests(List<RequestResponse> requestResponses) {
-        requestList.setLayoutManager(new LinearLayoutManager(getContext()));
         requestAdapter = new RequestAdapter(requestResponses);
         requestList.setAdapter(requestAdapter);
-        requestList.setVisibility(View.VISIBLE);
+        swipeRefreshRequestsContainer.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void updateRequests(List<RequestResponse> requestResponses) {
+        requestAdapter.clear();
+        requestAdapter.addAll(requestResponses);
+        swipeRefreshRequestsContainer.setRefreshing(false);
     }
 
     @Override
     public void hideRequests() {
-        requestList.setVisibility(View.GONE);
+        swipeRefreshRequestsContainer.setVisibility(View.GONE);
     }
 
     @Override
@@ -137,7 +174,31 @@ public class ExploreFragment extends BaseFragment implements ExploreView {
 
     @Override
     public void scrollToTop() {
-        requestList.getLayoutManager().smoothScrollToPosition(requestList, null, 0);
+        if (requestList.getLayoutManager() != null) {
+            requestList.smoothScrollToPosition(0);
+        }
     }
 
+    @Override
+    public void showRefreshErrorToast() {
+        Toast.makeText(getContext(), getString(R.string.refresh_error_unknown), Toast.LENGTH_SHORT).show();
+        swipeRefreshRequestsContainer.setRefreshing(false);
+    }
+
+    @Override
+    public void showRefreshErrorToast(int errorCode) {
+        Toast.makeText(getContext(), getString(R.string.refresh_error, errorCode), Toast.LENGTH_SHORT).show();
+        swipeRefreshRequestsContainer.setRefreshing(false);
+    }
+
+    @Override
+    public void showRefreshOfflineToast() {
+        Toast.makeText(getContext(), getString(R.string.refresh_offline), Toast.LENGTH_SHORT).show();
+        swipeRefreshRequestsContainer.setRefreshing(false);
+    }
+
+    private void setupSwipeRefreshContainer() {
+        swipeRefreshRequestsContainer.setOnRefreshListener(() -> presenter.refreshView());
+        swipeRefreshRequestsContainer.setColorSchemeResources(R.color.colorAccent);
+    }
 }

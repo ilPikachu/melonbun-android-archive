@@ -50,6 +50,28 @@ public class ExplorePresenter extends BasePresenter<ExploreView> {
         }
     }
 
+    void refreshView() {
+        if (connectivityCheck.isConnected()) {
+            exploreService.getRequests().enqueue(new Callback<List<RequestResponse>>() {
+                @Override
+                public void onResponse(Call<List<RequestResponse>> call, Response<List<RequestResponse>> response) {
+                    if (!response.isSuccessful()) {
+                        executeViewOperation(() -> view.showRefreshErrorToast(response.code()));
+                    } else {
+                        setupRefreshRequests(response.body());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<RequestResponse>> call, Throwable throwable) {
+                    executeViewOperation(() -> view.showRefreshErrorToast());
+                }
+            });
+        } else {
+            executeViewOperation(() -> view.showRefreshOfflineToast());
+        }
+    }
+
     private void setupRequests(List<RequestResponse> postedRequestResponses) {
         if (postedRequestResponses != null && !postedRequestResponses.isEmpty()) {
             executeViewOperation(() -> view.hideProgressBar());
@@ -58,6 +80,14 @@ public class ExplorePresenter extends BasePresenter<ExploreView> {
             executeViewOperation(() -> view.showRequests(postedRequestResponses));
         } else {
             setupErrorView();
+        }
+    }
+
+    private void setupRefreshRequests(List<RequestResponse> postedRequestResponses) {
+        if (postedRequestResponses != null && !postedRequestResponses.isEmpty()) {
+            executeViewOperation(() -> view.updateRequests(postedRequestResponses));
+        } else {
+            executeViewOperation(() -> view.showRefreshErrorToast());
         }
     }
 

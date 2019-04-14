@@ -34,7 +34,7 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
         ButterKnife.bind(this);
         setUpBottomNavigation();
 
-        //TODO: Save fragment position during configuration change
+        // setupFragments only if it's fresh start, no savedInstanceState from a configuration change
         if (savedInstanceState == null) {
             setupFragments();
         }
@@ -73,19 +73,16 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
     @Override
     public void navigateToExplore() {
         showCurrentFragment(ExploreFragment.class);
-        Toast.makeText(NavigationActivity.this, "Action clicked explore", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void navigateToPost() {
         showCurrentFragment(PostRequestFragment.class);
-        Toast.makeText(NavigationActivity.this, "Action clicked post", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void navigateToProfile() {
         showCurrentFragment(ProfileFragment.class);
-        Toast.makeText(NavigationActivity.this, "Action clicked profile", Toast.LENGTH_LONG).show();
     }
 
     @Override
