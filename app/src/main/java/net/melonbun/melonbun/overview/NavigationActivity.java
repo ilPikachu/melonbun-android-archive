@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import net.melonbun.melonbun.R;
+import net.melonbun.melonbun.common.BaseFragment;
 import net.melonbun.melonbun.explore.ExploreFragment;
 import net.melonbun.melonbun.post.PostRequestFragment;
 import net.melonbun.melonbun.profile.ProfileFragment;
@@ -33,6 +34,7 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
         ButterKnife.bind(this);
         setUpBottomNavigation();
 
+        //TODO: Save fragment position during configuration change
         if (savedInstanceState == null) {
             setupFragments();
         }
@@ -101,7 +103,7 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
     private <T extends Fragment> void replaceFragment(Class<T> fragmentClass) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        Fragment fragment = instantiateFragment(fragmentClass);
+        BaseFragment fragment = (BaseFragment) instantiateFragment(fragmentClass);
 
         fragmentTransaction.
                 replace(R.id.content_frame, fragment, fragment.getClass().getCanonicalName())
@@ -109,25 +111,23 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
     }
 
     //TODO: Implement a way you can modify the backstack order, to achieve similar to what youtube android has, currently it's not supported by fragmentManager
+    //TODO: If it's added to the backstack, click on the bottom nav item move the current one to the top of the stack
     private <T extends Fragment> void showCurrentFragment(Class<T> fragmentClass) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        Fragment fragment = fragmentManager.findFragmentByTag(fragmentClass.getCanonicalName());
+        BaseFragment fragment = (BaseFragment) fragmentManager.findFragmentByTag(fragmentClass.getCanonicalName());
 
-        // if fragment is not null, and not visible show fragment
         if (fragment != null && !fragment.isVisible()) {
             fragmentTransaction.show(fragment);
-            //TODO: If it's added to the backstack, click on the bottom nav item move the current one to the top of the stack
         } else if (fragment == null) {
-            fragment = instantiateFragment(fragmentClass);
+            fragment = (BaseFragment) instantiateFragment(fragmentClass);
             fragmentTransaction.add(R.id.content_frame, fragment, fragment.getClass().getCanonicalName());
         } else if (fragment.isVisible()) {
-            //no-op
-            //TODO: Fragment specific actions: for example Explore page would be move to the top callback.
+            // handling the case where the user click on the same navigation item as the one that's currently displayed
+            fragment.handleOnBottomNavSameItemSelected();
             return;
         }
 
-        // if we want to show just one fragment we have to hide all others, show and add will show the fragment, and we hide away all others
         for (Fragment currentFragment : fragmentManager.getFragments()) {
             if (currentFragment != fragment) {
                 fragmentTransaction.hide(currentFragment);

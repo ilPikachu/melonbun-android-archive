@@ -22,4 +22,6 @@ public interface ExploreView extends BaseView {
     void showOfflineView();
 
     void hideOfflineView();
+
+    void scrollToTop();
 }

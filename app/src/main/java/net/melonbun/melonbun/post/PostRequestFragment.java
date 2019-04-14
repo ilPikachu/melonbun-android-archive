@@ -7,16 +7,16 @@ import android.view.ViewGroup;
 
 import net.melonbun.melonbun.MelonbunApplication;
 import net.melonbun.melonbun.R;
+import net.melonbun.melonbun.common.BaseFragment;
 
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class PostRequestFragment extends Fragment implements PostRequestView {
+public class PostRequestFragment extends BaseFragment implements PostRequestView {
 
     private Unbinder unbinder;
 

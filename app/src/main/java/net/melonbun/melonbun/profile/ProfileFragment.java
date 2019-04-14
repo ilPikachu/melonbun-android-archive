@@ -7,16 +7,16 @@ import android.view.ViewGroup;
 
 import net.melonbun.melonbun.MelonbunApplication;
 import net.melonbun.melonbun.R;
+import net.melonbun.melonbun.common.BaseFragment;
 
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class ProfileFragment extends Fragment implements ProfileView {
+public class ProfileFragment extends BaseFragment implements ProfileView {
 
     private Unbinder unbinder;
 
