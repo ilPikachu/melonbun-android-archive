@@ -16,6 +16,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import net.melonbun.melonbun.R;
 import net.melonbun.melonbun.explore.ExploreFragment;
 import net.melonbun.melonbun.post.PostRequestFragment;
+import net.melonbun.melonbun.profile.ProfileFragment;
 
 public class NavigationActivity extends AppCompatActivity implements NavigationView {
 
@@ -81,7 +82,20 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
 
     @Override
     public void navigateToProfile() {
+        showCurrentFragment(ProfileFragment.class);
         Toast.makeText(NavigationActivity.this, "Action clicked profile", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        int selectedItemId = bottomNavigationView.getSelectedItemId();
+
+        //TODO: We might have to change this logic once we have child fragments adding to the backstack, such as adding of getFragmentManager().getBackStackEntryCount() == 0 condition
+        if (R.id.action_explore != selectedItemId) {
+            bottomNavigationView.setSelectedItemId(R.id.action_explore);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private <T extends Fragment> void replaceFragment(Class<T> fragmentClass) {
@@ -94,6 +108,7 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
                 .commit();
     }
 
+    //TODO: Implement a way you can modify the backstack order, to achieve similar to what youtube android has, currently it's not supported by fragmentManager
     private <T extends Fragment> void showCurrentFragment(Class<T> fragmentClass) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -102,6 +117,7 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
         // if fragment is not null, and not visible show fragment
         if (fragment != null && !fragment.isVisible()) {
             fragmentTransaction.show(fragment);
+            //TODO: If it's added to the backstack, click on the bottom nav item move the current one to the top of the stack
         } else if (fragment == null) {
             fragment = instantiateFragment(fragmentClass);
             fragmentTransaction.add(R.id.content_frame, fragment, fragment.getClass().getCanonicalName());

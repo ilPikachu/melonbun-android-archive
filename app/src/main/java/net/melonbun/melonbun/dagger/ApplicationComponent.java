@@ -5,6 +5,7 @@ import net.melonbun.melonbun.dagger.modules.ExploreModule;
 import net.melonbun.melonbun.dagger.modules.NetworkModule;
 import net.melonbun.melonbun.explore.ExploreFragment;
 import net.melonbun.melonbun.post.PostRequestFragment;
+import net.melonbun.melonbun.profile.ProfileFragment;
 
 import javax.inject.Singleton;
 
@@ -25,5 +26,7 @@ public interface ApplicationComponent {
     void inject(ExploreFragment exploreFragment);
 
     void inject(PostRequestFragment postRequestFragment);
+
+    void inject(ProfileFragment profileFragment);
 
 }
