@@ -80,35 +80,41 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/request_card_title" />
 
-        <com.google.android.material.button.MaterialButton
+        <com.google.android.material.chip.Chip
             android:id="@+id/request_card_tag_1"
+            style="@style/Widget.MaterialComponents.Chip.Action"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:padding="4dp"
+            android:clickable="true"
+            android:focusable="true"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/request_card_image" />
 
-        <com.google.android.material.button.MaterialButton
+        <com.google.android.material.chip.Chip
             android:id="@+id/request_card_tag_2"
+            style="@style/Widget.MaterialComponents.Chip.Action"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:padding="4dp"
+            android:clickable="true"
+            android:focusable="true"
             android:visibility="gone"
             app:layout_constraintStart_toEndOf="@+id/request_card_tag_1"
             app:layout_constraintTop_toBottomOf="@+id/request_card_image" />
 
-        <com.google.android.material.button.MaterialButton
+        <com.google.android.material.chip.Chip
             android:id="@+id/request_card_tag_3"
+            style="@style/Widget.MaterialComponents.Chip.Action"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:padding="4dp"
+            android:clickable="true"
+            android:focusable="true"
             android:visibility="gone"
             app:layout_constraintStart_toEndOf="@+id/request_card_tag_2"
             app:layout_constraintTop_toBottomOf="@+id/request_card_image" />
@@ -117,6 +123,8 @@
             android:id="@+id/request_card_favorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
             android:paddingStart="12dp"
             android:paddingTop="8dp"
             android:paddingEnd="8dp"
@@ -130,6 +138,8 @@
             android:id="@+id/request_card_share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
             android:padding="8dp"
             android:src="@drawable/ic_share"
             app:layout_constraintBottom_toTopOf="@+id/request_card_body"

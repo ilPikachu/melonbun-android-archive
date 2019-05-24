@@ -1,5 +1,6 @@
 package net.melonbun.melonbun.explore.adapter;
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.chip.Chip;
 
 import net.melonbun.melonbun.R;
 import net.melonbun.melonbun.common.model.RequestResponse;
@@ -59,6 +61,28 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         holder.requestCardTitle.setText(requestResponses.get(position).getTitle());
         holder.requestCardBody.setText(requestResponses.get(position).getBody());
         final ImageView requestCardFavorite = holder.requestCardFavorite;
+        final List<String> tags = requestResponses.get(position).getTags();
+
+        //TODO: Break response binding into functions
+        for (int i = 0; i < tags.size(); i++) {
+            switch (i) {
+                case 0:
+                    holder.requestCardTag1.setText(tags.get(0));
+                    holder.requestCardTag1.setVisibility(View.VISIBLE);
+                    break;
+                case 1:
+                    holder.requestCardTag2.setText(tags.get(1));
+                    holder.requestCardTag2.setVisibility(View.VISIBLE);
+                    break;
+                case 2:
+                    holder.requestCardTag3.setText(tags.get(2));
+                    holder.requestCardTag3.setVisibility(View.VISIBLE);
+                    break;
+                default:
+                    break;
+            }
+        }
+
 
         // TODO: Set ImageDrawable according to fav boolean back from API response
         if (requestResponses.get(position).getFavState()) {
@@ -87,7 +111,10 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         });
 
         holder.requestCardShare.setOnClickListener(view -> {
-            // TODO: launches intent with share
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, "https://melonbun.herokuapp.com/requestInfo?title=" + requestResponses.get(position).getId());
+            view.getContext().startActivity(Intent.createChooser(shareIntent, "Share link using"));
         });
 
         setFadeAnimation(holder.requestCardView);
@@ -121,6 +148,9 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         TextView requestCardDate;
         TextView requestCardTitle;
         ImageView requestCardImage;
+        Chip requestCardTag1;
+        Chip requestCardTag2;
+        Chip requestCardTag3;
         ImageView requestCardFavorite;
         ImageView requestCardShare;
         TextView requestCardBody;
@@ -134,6 +164,9 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
             requestCardDate = requestCardView.findViewById(R.id.request_card_posted_date);
             requestCardTitle = requestCardView.findViewById(R.id.request_card_title);
             requestCardImage = requestCardView.findViewById(R.id.request_card_image);
+            requestCardTag1 = requestCardView.findViewById(R.id.request_card_tag_1);
+            requestCardTag2 = requestCardView.findViewById(R.id.request_card_tag_2);
+            requestCardTag3 = requestCardView.findViewById(R.id.request_card_tag_3);
             requestCardFavorite = requestCardView.findViewById(R.id.request_card_favorite);
             requestCardShare = requestCardView.findViewById(R.id.request_card_share);
             requestCardBody = requestCardView.findViewById(R.id.request_card_body);
