@@ -17,4 +17,6 @@
 
     <string name="request_body_view_more">more</string>
 
+    <string name="request_share_title">Share request link using</string>
+
 </resources>

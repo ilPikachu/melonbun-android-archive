@@ -113,8 +113,8 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         holder.requestCardShare.setOnClickListener(view -> {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
-            shareIntent.putExtra(Intent.EXTRA_TEXT, "https://melonbun.herokuapp.com/requestInfo?title=" + requestResponses.get(position).getId());
-            view.getContext().startActivity(Intent.createChooser(shareIntent, "Share link using"));
+            shareIntent.putExtra(Intent.EXTRA_TEXT, view.getContext().getString(R.string.url_melonbun_web_query) + requestResponses.get(position).getId());
+            view.getContext().startActivity(Intent.createChooser(shareIntent, view.getContext().getString(R.string.request_share_title)));
         });
 
         setFadeAnimation(holder.requestCardView);
