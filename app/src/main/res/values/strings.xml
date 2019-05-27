@@ -15,4 +15,8 @@
     <string name="refresh_error_unknown">Refresh failed</string>
     <string name="refresh_offline">Refresh failed, you\'re offline</string>
 
+    <string name="request_body_view_more">more</string>
+
+    <string name="request_share_title">Share request link using</string>
+
 </resources>

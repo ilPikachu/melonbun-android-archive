@@ -15,8 +15,9 @@ public class RequestResponse {
     @SerializedName("status") private String status;
     @SerializedName("price") private Price price;
     @SerializedName("tags") private List<String> tags;
+    private Boolean favState;
 
-    public RequestResponse(String id, String title, String body, String date, String userName, String status, Price price, List<String> tags) {
+    public RequestResponse(String id, String title, String body, String date, String userName, String status, Price price, List<String> tags, Boolean favState) {
         this.id = id;
         this.title = title;
         this.body = body;
@@ -25,6 +26,7 @@ public class RequestResponse {
         this.status = status;
         this.price = price;
         this.tags = tags;
+        this.favState = favState;
     }
 
     public String getId() {
@@ -57,5 +59,13 @@ public class RequestResponse {
 
     public List<String> getTags() {
         return tags == null ? new ArrayList<>() : tags;
+    }
+
+    public Boolean getFavState() {
+        return favState == null ? false : favState;
+    }
+
+    public void setFavState(Boolean favState) {
+        this.favState = favState;
     }
 }
