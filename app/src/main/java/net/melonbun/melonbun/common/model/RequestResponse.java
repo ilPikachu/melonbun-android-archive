@@ -15,7 +15,7 @@ public class RequestResponse {
     @SerializedName("status") private String status;
     @SerializedName("price") private Price price;
     @SerializedName("tags") private List<String> tags;
-    private Boolean favState;
+    @SerializedName("fav_state")private Boolean favState;
 
     public RequestResponse(String id, String title, String body, String date, String userName, String status, Price price, List<String> tags, Boolean favState) {
         this.id = id;
