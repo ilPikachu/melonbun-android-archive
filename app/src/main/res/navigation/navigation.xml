@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation.xml"
+    app:startDestination="@+id/explore_dest">
+
+    <fragment
+        android:id="@+id/explore_dest"
+        android:name="net.melonbun.melonbun.explore.ExploreFragment"
+        android:label=""
+        tools:layout="@layout/fragment_explore"/>
+
+    <fragment
+        android:id="@+id/profile_dest"
+        android:name="net.melonbun.melonbun.profile.ProfileFragment"
+        tools:layout="@layout/fragment_profile"/>
+
+    <fragment
+        android:id="@+id/post_dest"
+        android:name="net.melonbun.melonbun.post.PostRequestFragment"
+        tools:layout="@layout/fragment_post_request"/>
+
+
+</navigation>
