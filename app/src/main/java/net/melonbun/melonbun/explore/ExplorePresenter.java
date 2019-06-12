@@ -32,6 +32,7 @@ public class ExplorePresenter extends BasePresenter<ExploreView> {
         this.requestListObservable = exploreService.getRequests().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
+    //TODO: Add Observable to a Disposable, Unsubscribe in onDestoryView of the Fragment
     @SuppressLint("CheckResult")
     void decorateView() {
         if (connectivityCheck.isConnected()) {
@@ -52,6 +53,7 @@ public class ExplorePresenter extends BasePresenter<ExploreView> {
         }
     }
 
+    //TODO: Add Observable to a Disposable, Unsubscribe in onDestoryView of the Fragment
     @SuppressLint("CheckResult")
     void refreshView() {
         if (connectivityCheck.isConnected()) {
