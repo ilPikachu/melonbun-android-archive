@@ -13,7 +13,6 @@ import javax.inject.Inject;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
@@ -37,7 +36,7 @@ public class ExplorePresenter extends BasePresenter<ExploreView> {
     void decorateView() {
         if (connectivityCheck.isConnected()) {
             setupProgressBar();
-            Disposable d = requestListObservable.subscribeWith(new DisposableSingleObserver<List<RequestResponse>>() {
+            requestListObservable.subscribeWith(new DisposableSingleObserver<List<RequestResponse>>() {
                 @Override
                 public void onSuccess(List<RequestResponse> requestResponses) {
                     setupRequests(requestResponses);
