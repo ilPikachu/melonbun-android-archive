@@ -4,7 +4,7 @@ import net.melonbun.melonbun.common.model.RequestResponse;
 
 import java.util.List;
 
-import retrofit2.Call;
+import io.reactivex.Single;
 
 public class ExploreService {
 
@@ -14,11 +14,11 @@ public class ExploreService {
         this.exploreApi = exploreApi;
     }
 
-    public Call<RequestResponse> getRequest(String requestId) {
+    public Single<RequestResponse> getRequest(String requestId) {
         return exploreApi.getRequest(requestId);
     }
 
-    public Call<List<RequestResponse>> getRequests() {
+    public Single<List<RequestResponse>> getRequests() {
         return exploreApi.getRequests();
     }
 }

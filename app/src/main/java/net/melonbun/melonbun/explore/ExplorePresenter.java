@@ -1,5 +1,7 @@
 package net.melonbun.melonbun.explore;
 
+import android.annotation.SuppressLint;
+
 import net.melonbun.melonbun.common.BasePresenter;
 import net.melonbun.melonbun.common.model.RequestResponse;
 import net.melonbun.melonbun.common.network.ConnectivityCheck;
@@ -9,9 +11,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * This is the presenter for {@link ExploreFragment}
@@ -20,28 +24,27 @@ public class ExplorePresenter extends BasePresenter<ExploreView> {
 
     private final ConnectivityCheck connectivityCheck;
     private final ExploreService exploreService;
+    private final Single<List<RequestResponse>> requestListObservable;
 
     @Inject
     public ExplorePresenter(ConnectivityCheck connectivityCheck, ExploreService exploreService) {
         this.connectivityCheck = connectivityCheck;
         this.exploreService = exploreService;
+        this.requestListObservable = exploreService.getRequests().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
+    @SuppressLint("CheckResult")
     void decorateView() {
         if (connectivityCheck.isConnected()) {
             setupProgressBar();
-            exploreService.getRequests().enqueue(new Callback<List<RequestResponse>>() {
+            Disposable d = requestListObservable.subscribeWith(new DisposableSingleObserver<List<RequestResponse>>() {
                 @Override
-                public void onResponse(Call<List<RequestResponse>> call, Response<List<RequestResponse>> response) {
-                    if (!response.isSuccessful()) {
-                        setupErrorView();
-                    } else {
-                        setupRequests(response.body());
-                    }
+                public void onSuccess(List<RequestResponse> requestResponses) {
+                    setupRequests(requestResponses);
                 }
 
                 @Override
-                public void onFailure(Call<List<RequestResponse>> call, Throwable throwable) {
+                public void onError(Throwable e) {
                     setupErrorView();
                 }
             });
@@ -50,20 +53,17 @@ public class ExplorePresenter extends BasePresenter<ExploreView> {
         }
     }
 
+    @SuppressLint("CheckResult")
     void refreshView() {
         if (connectivityCheck.isConnected()) {
-            exploreService.getRequests().enqueue(new Callback<List<RequestResponse>>() {
+            requestListObservable.subscribeWith(new DisposableSingleObserver<List<RequestResponse>>() {
                 @Override
-                public void onResponse(Call<List<RequestResponse>> call, Response<List<RequestResponse>> response) {
-                    if (!response.isSuccessful()) {
-                        executeViewOperation(() -> view.showRefreshErrorToast(response.code()));
-                    } else {
-                        setupRefreshRequests(response.body());
-                    }
+                public void onSuccess(List<RequestResponse> requestResponses) {
+                    setupRefreshRequests(requestResponses);
                 }
 
                 @Override
-                public void onFailure(Call<List<RequestResponse>> call, Throwable throwable) {
+                public void onError(Throwable e) {
                     executeViewOperation(() -> view.showRefreshErrorToast());
                 }
             });

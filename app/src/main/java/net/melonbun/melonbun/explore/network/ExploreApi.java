@@ -5,7 +5,7 @@ import net.melonbun.melonbun.common.network.ApiBuilder;
 
 import java.util.List;
 
-import retrofit2.Call;
+import io.reactivex.Single;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
@@ -18,13 +18,13 @@ public interface ExploreApi {
         }
 
         public ExploreApi build() {
-            return apiBuilder.useGsonSerializer().build(ExploreApi.class);
+            return apiBuilder.useGsonSerializer().useRxJava2().build(ExploreApi.class);
         }
     }
 
     @GET("requests")
-    Call<List<RequestResponse>> getRequests();
+    Single<List<RequestResponse>> getRequests();
 
     @GET("requests/{requestId}")
-    Call<RequestResponse> getRequest(@Path("requestId") String requestId);
+    Single<RequestResponse> getRequest(@Path("requestId") String requestId);
 }
